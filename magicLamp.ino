@@ -1,12 +1,14 @@
+//NodeMCU 1.0
 #include <ESP8266WiFi.h>
 #include <Adafruit_NeoPixel.h>
 
-#define PIN 4
-#define RELE 5
+#define PIN D1
+#define RELE D2
+#define PRESENCE A0
 #define NUM_PIXELS  24
 
-const char* ssid = "....";
-const char* password = "....";
+const char* ssid = "TNCAP3483C9";
+const char* password = "D0986E6EA2";
 bool ligthStatus = false;
 
 // Create NeoPixel object
@@ -108,13 +110,16 @@ void knightRider(uint16_t cycles, uint16_t speed, uint8_t width, uint32_t color)
 
 void setup() {
   Serial.begin(115200);
+  Serial.print("Begin ! ");
   // Initialize the rele variables as outputs
   pinMode(RELE, OUTPUT);
+  //pinMode(PRESENCE, INPUT_PULLUP);
+  //digitalWrite(PRESENCE,LOW);
   digitalWrite(RELE, HIGH); // Main light off
+  Serial.print("Rele ok ! ");
   strip.begin();
   clearStrip(); // Initialize all pixels to 'off'
   delay(1000);
-
 
   // Connect to Wi-Fi network with SSID and password
   Serial.print("Connecting to ");
@@ -133,6 +138,17 @@ void setup() {
 }
 
 void loop() {
+  delay(30);
+  int v=analogRead(PRESENCE);
+
+  if(v>500){
+    digitalWrite(RELE, LOW);
+    Serial.println("Presence detected.");
+    
+    }else{
+    digitalWrite(RELE, HIGH);
+    // Gestire stato
+    }
   WiFiClient client = server.available();   // Listen for incoming clients
 
   if (client) {                             // If a new client connects,
