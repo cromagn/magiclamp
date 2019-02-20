@@ -8,7 +8,7 @@
 #define NUM_PIXELS  24
 
 const char* ssid = "TNCAP3483C9";
-const char* password = "D0986E6EA2";
+const char* password = "";
 bool ligthStatus = false;
 
 // Create NeoPixel object
